@@ -1,12 +1,11 @@
 const { Router } = require('express');
+const createdUserHandlers = require('../handlers/postHandlers');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
 
 const postRouters = Router();
 
-postRouters.post("/pokemons",(req,res)=>{
-    res.status(200).send("Crear pokemon")
-})
+postRouters.post("/",createdUserHandlers)
 
 module.exports = postRouters

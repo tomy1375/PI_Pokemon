@@ -13,7 +13,7 @@ router.use("/pokemons", userRouters)
 
 router.use("/types", typesRouters)
 
-router.post("/pokemons", postRouters)
+router.use("/pokemons", postRouters)
 
 // Ejemplo: router.use('/auth', authRouter);
 

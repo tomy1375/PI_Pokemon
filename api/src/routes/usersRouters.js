@@ -6,9 +6,9 @@ const { getDetailHandler, getUserHandler } = require('../handlers/usersHandlers'
 
 const userRouters = Router();
 
-userRouters.use("/:id", getDetailHandler)
+userRouters.get("/:id", getDetailHandler)
 
-userRouters.use('/',getUserHandler)
+userRouters.get('/',getUserHandler)
 
 
 module.exports = userRouters
