@@ -40,6 +40,10 @@ module.exports = (sequelize) => {
     weight: {
       type: DataTypes.STRING,
       allowNull:false
+    },
+    created:{
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     }
   },{
     timestamps: false
