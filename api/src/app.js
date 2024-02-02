@@ -3,12 +3,25 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
+const { getAndSaveTypes } = require('./controllers/typesControllers.js');
+
 
 require('./db.js');
 
 const server = express();
 
 server.name = 'API';
+
+getAndSaveTypes()
+  .then((message) => {
+    console.log(message);
+    // Continuar con la configuración de la aplicación después de que los tipos se hayan guardado en la base de datos.
+    
+  })
+  .catch((error) => {
+    console.error('Error durante la inicialización de la base de datos:', error.message);
+    // Manejar el error de alguna manera si es necesario
+  });
 
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
