@@ -77,7 +77,7 @@ const getUserFromDatabase = async (name) => {
 const getAllUser = async () => {
   try {
     const userDB = await Pokemon.findAll();
-    const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon")).data;
+    const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=100")).data;
     const userApi = infoCleaner(infoApi);
 
     // Hacer solicitudes adicionales para obtener información dentro de las URLs
