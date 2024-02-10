@@ -12,6 +12,20 @@
     transition: transform 0.25s ease-out;
 }
 
+.card-container img {
+    width: 100%; /* La imagen ocupará el 100% del ancho del contenedor */
+    max-width: 390px; /* Ajusta según sea necesario para controlar el tamaño máximo */
+    border-radius: 20%; /* Para hacer que la imagen sea circular, opcional */
+  }
+  
+  .card-container h2 {
+    margin: 10px 0;
+  }
+  
+  .card-container p {
+    color: #555;
+  }
+
 .card-container:hover{
     transform: scale(1.05);
 }

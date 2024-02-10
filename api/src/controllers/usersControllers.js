@@ -38,104 +38,128 @@ const getUserFromDatabase = async (name) => {
   
 
 
-const getUserById = async (id, source) => {
+  const getUserById = async (id, source) => {
     let user;
+  
     if (source === "api") {
+      try {
         const userData = (await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)).data;
-        // const hpStat = userData.stats.find(stat => stat.stat.name === "hp")
+        const hpStat = userData.stats.find((stat) => stat.stat.name === "hp");
+  
+        // Obtener la URL del official-artwork
+        const officialArtworkUrl =
+          userData.sprites.other["official-artwork"].front_default;
+  
         user = {
-            name: userData.name,
-            hp: userData.stats.find(stat => stat.stat.name === "hp")?.base_stat || 0,
-            height: userData.height,
-            weight: userData.weight,
-            types: userData.types.map(type => type.type.name),
-            attack: userData.stats.find(stat => stat.stat.name === "attack")?.base_stat || 0,
-            defense: userData.stats.find(stat => stat.stat.name === "defense")?.base_stat || 0,
-            speed: userData.stats.find(stat => stat.stat.name === "speed")?.base_stat || 0,
+          id:userData.id,
+          name: userData.name,
+          hp: hpStat ? hpStat.base_stat : 0,
+          height: userData.height,
+          weight: userData.weight,
+          types: userData.types.map((type) => type.type.name),
+          attack: userData.stats.find((stat) => stat.stat.name === "attack")?.base_stat || 0,
+          defense: userData.stats.find((stat) => stat.stat.name === "defense")?.base_stat || 0,
+          speed: userData.stats.find((stat) => stat.stat.name === "speed")?.base_stat || 0,
+          image: officialArtworkUrl,
         };
+      } catch (error) {
+        throw new Error(`Error fetching user by ID from API: ${error.message}`);
+      }
     } else {
-        user = await Pokemon.findByPk(id);
+      user = await Pokemon.findByPk(id);
     }
+  
     return user;
-}
+  };
+  
 
 
 const getAllUser = async () => {
-    try {
-        const userDB = await Pokemon.findAll();
-        const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon")).data;
-        const userApi = infoCleaner(infoApi);
+  try {
+    const userDB = await Pokemon.findAll();
+    const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon")).data;
+    const userApi = infoCleaner(infoApi);
 
-        // Hacer solicitudes adicionales para obtener información dentro de las URLs
-        const userDetailedInfoPromises = userApi.map(async (user) => {
-            if (user.url) {
-                const detailedInfo = (await axios.get(user.url)).data;
-                const hpStat = detailedInfo.stats.find(stat => stat.stat.name === "hp");
+    // Hacer solicitudes adicionales para obtener información dentro de las URLs
+    const userDetailedInfoPromises = userApi.map(async (user) => {
+      if (user.url) {
+        const detailedInfo = (await axios.get(user.url)).data;
+        const hpStat = detailedInfo.stats.find((stat) => stat.stat.name === "hp");
 
-                return {
-                    name: user.name,
-                    height: detailedInfo.height,
-                    weight: detailedInfo.weight,
-                    types: detailedInfo.types.map(type => type.type.name),
-                    hp: hpStat ? hpStat.base_stat : 0,
-                    attack: detailedInfo.stats.find(stat => stat.stat.name === "attack")?.base_stat || 0,
-                    defense: detailedInfo.stats.find(stat => stat.stat.name === "defense")?.base_stat || 0,
-                    speed: detailedInfo.stats.find(stat => stat.stat.name === "speed")?.base_stat || 0,
-                    created: user.created
-                };
-            }
-            return null;
-        });
+        // Obtener la URL del official-artwork
+        const officialArtworkUrl =
+          detailedInfo.sprites.other["official-artwork"].front_default;
 
-        const userDetailedInfo = await Promise.all(userDetailedInfoPromises);
+        return {
+          id: detailedInfo.id,
+          name: user.name,
+          height: detailedInfo.height,
+          weight: detailedInfo.weight,
+          types: detailedInfo.types.map((type) => type.type.name),
+          hp: hpStat ? hpStat.base_stat : 0,
+          attack: detailedInfo.stats.find((stat) => stat.stat.name === "attack")?.base_stat || 0,
+          defense: detailedInfo.stats.find((stat) => stat.stat.name === "defense")?.base_stat || 0,
+          speed: detailedInfo.stats.find((stat) => stat.stat.name === "speed")?.base_stat || 0,
+          image: officialArtworkUrl,
+          created: user.created
+        };
+      }
+      return null;
+    });
 
-        return [...userDB, ...userDetailedInfo.filter(Boolean)];
-    } catch (error) {
-        throw new Error(`Error fetching all users: ${error.message}`);
-    }
+    const userDetailedInfo = await Promise.all(userDetailedInfoPromises);
+
+    return [...userDB, ...userDetailedInfo.filter(Boolean)];
+  } catch (error) {
+    throw new Error(`Error fetching all users: ${error.message}`);
+  }
 };
 
 const getUserByName = async (name) => {
-    try {
-      const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon", {
-        params: { limit: 1000 }
-      })).data;
-    //   console.log(infoApi)
-      const userApi = infoCleaner(infoApi);
-  
-      // Convertir el nombre de búsqueda a minúsculas para comparaciones insensibles a mayúsculas y minúsculas
-      const lowerCaseName = name.toLowerCase();
-  
-      const userFiltered = userApi.filter((user) => user.name.toLowerCase() === lowerCaseName);
-    
-  
-      const userDetailedInfoPromises = userFiltered.map(async (user) => {
-        if (user.url) {
-          const detailedInfo = (await axios.get(user.url)).data;
-  
-          return {
-            name: user.name,
-            height: detailedInfo.height,
-            weight: detailedInfo.weight,
-            types: detailedInfo.types.map(type => type.type.name),
-            hp: detailedInfo.stats.find(stat => stat.stat.name === "hp")?.base_stat || 0,
-            attack: detailedInfo.stats.find(stat => stat.stat.name === "attack")?.base_stat || 0,
-            defense: detailedInfo.stats.find(stat => stat.stat.name === "defense")?.base_stat || 0,
-            speed: detailedInfo.stats.find(stat => stat.stat.name === "speed")?.base_stat || 0,
-            created: user.created
-          };
-        }
-        return null;
-      });
-  
-      const userDetailedInfo = await Promise.all(userDetailedInfoPromises);
-  
-      return userDetailedInfo.filter(Boolean);
-    } catch (error) {
-      throw new Error(`Error fetching user by name: ${error.message}`);
-    }
-  };
-  
+  try {
+    const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon", {
+      params: { limit: 1000 }
+    })).data;
+
+    const userApi = infoCleaner(infoApi);
+
+    const lowerCaseName = name.toLowerCase();
+
+    const userFiltered = userApi.filter((user) => user.name.toLowerCase() === lowerCaseName);
+
+    const userDetailedInfoPromises = userFiltered.map(async (user) => {
+      if (user.url) {
+        const detailedInfo = (await axios.get(user.url)).data;
+
+        // Obtener la URL del official-artwork
+        const officialArtworkUrl =
+          detailedInfo.sprites.other["official-artwork"].front_default;
+
+        return {
+          id: detailedInfo.id,
+          name: user.name,
+          height: detailedInfo.height,
+          weight: detailedInfo.weight,
+          types: detailedInfo.types.map((type) => type.type.name),
+          hp: detailedInfo.stats.find((stat) => stat.stat.name === "hp")?.base_stat || 0,
+          attack: detailedInfo.stats.find((stat) => stat.stat.name === "attack")?.base_stat || 0,
+          defense: detailedInfo.stats.find((stat) => stat.stat.name === "defense")?.base_stat || 0,
+          speed: detailedInfo.stats.find((stat) => stat.stat.name === "speed")?.base_stat || 0,
+          image: officialArtworkUrl,
+          created: user.created
+        };
+      }
+      return null;
+    });
+
+    const userDetailedInfo = await Promise.all(userDetailedInfoPromises);
+
+    return userDetailedInfo.filter(Boolean);
+  } catch (error) {
+    throw new Error(`Error fetching user by name: ${error.message}`);
+  }
+};
+
 
 
 

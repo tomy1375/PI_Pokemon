@@ -1,13 +1,18 @@
+import {Link} from "react-router-dom"
+
 import React from 'react'
 import "./card.styles.css"
 
-function Card() {
+function Card({user}) {
+  console.log(user)
+  const {name, image, types, id} = user
   return (
     <div className='card-container'>
-      <h2>Nombre:</h2>
-      <img src="" alt="" />
-      <p>hp:</p>
-      <p>tipo:</p>
+      <Link to={`/home/${id}`}>
+      <img src={image} alt="" />
+      <h2>{name}</h2>
+      <p>{types}</p>
+      </Link>
     </div>
   )
 }

@@ -6,6 +6,7 @@ const routes = require('./routes/index.js');
 const { getAndSaveTypes } = require('./controllers/typesControllers.js');
 
 
+
 require('./db.js');
 
 const server = express();
