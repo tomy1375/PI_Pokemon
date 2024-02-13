@@ -1,9 +1,36 @@
-.search-box{
+/* navbar.styles.css */
+
+.navbar {
+    background-color: #333; /* Cambia el color de fondo según tus preferencias */
+    color: white; /* Cambia el color del texto según tus preferencias */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .search-box {
     /* -webkit-appearance: none; */
     border: none;
     outline: none;
     padding: 10px;
     width: 150px;
     line-height: 30px;
-    margin-bottom: 30px;
-}
+  }
+  
+  .nav-links {
+    display: flex;
+  }
+  
+  .nav-link {
+    margin-right: 10px;
+  }
+  
+  .nav-link button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+  

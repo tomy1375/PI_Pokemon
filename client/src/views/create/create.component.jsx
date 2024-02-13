@@ -61,27 +61,17 @@ function Create() {
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
-
-    setInput({
-      ...input,
-      image: selectedImage,
-    });
-
+    setInput({ ...input, image: selectedImage });
     validate(input);
   };
 
   const HandleChange = (e) => {
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-
+    setInput({ ...input, [e.target.name]: e.target.value });
     validate(input);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     validate(input);
 
     if (
@@ -128,7 +118,7 @@ function Create() {
   const imagePreview = input.image ? URL.createObjectURL(input.image) : null;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="create-form" onSubmit={handleSubmit}>
       <div>
         <label> Imagen </label>
         <input type="file" accept="image/*" name="image" onChange={handleImageChange} />

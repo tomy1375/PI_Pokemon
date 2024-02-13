@@ -1,0 +1,49 @@
+/* create.styles.css */
+
+.create-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .create-form div {
+    margin-bottom: 15px;
+  }
+  
+  .create-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .create-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+  
+  .create-form span {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+  }
+  
+  .create-form button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .create-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .create-form img {
+    max-width: 200px;
+    margin-top: 10px;
+  }
+  
