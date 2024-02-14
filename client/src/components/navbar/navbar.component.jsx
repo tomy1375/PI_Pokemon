@@ -3,6 +3,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import "./navbar.styles.css"
+
 const Navbar = ({ handleChange, handleSubmit }) => {
   return (
     <div className='navbar'>
@@ -14,10 +16,13 @@ const Navbar = ({ handleChange, handleSubmit }) => {
       </div>
       <div className='nav-links'>
         <Link to="/create" className='nav-link'>
-          <button>Create Dog</button>
+          <button>Crear Pokemon</button>
         </Link>
         <Link to="/home" className='nav-link'>
           <button>Home</button>
+        </Link>
+        <Link to="/about" className='nav-link'>
+          <button>About</button>
         </Link>
       </div>
     </div>
