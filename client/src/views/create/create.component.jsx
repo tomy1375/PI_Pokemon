@@ -84,20 +84,19 @@ function Create() {
       !error.weight &&
       !error.image
     ) {
-      try {
-        const formData = new FormData();
-        formData.append('name', input.name);
-        formData.append('image', input.image);
-        formData.append('life', input.life);
-        formData.append('attack', input.attack);
-        formData.append('defense', input.defense);
-        formData.append('speed', input.speed);
-        formData.append('height', input.height);
-        formData.append('weight', input.weight);
-
-        const response = await axios.post('http://localhost:3001/pokemons', formData, {
+      try  {
+        const response = await axios.post('http://localhost:3001/pokemons', {
+          name: input.name,
+          life: input.life,
+          attack: input.attack,
+          defense: input.defense,
+          speed: input.speed,
+          height: input.height,
+          weight: input.weight,
+          // La imagen no se incluye aquí, ya que el formato JSON no maneja archivos binarios directamente
+        }, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         });
 
@@ -120,6 +119,7 @@ function Create() {
   return (
     <form className="create-form" onSubmit={handleSubmit}>
       <div>
+        <br /><br /><br /><br />
         <label> Imagen </label>
         <input type="file" accept="image/*" name="image" onChange={handleImageChange} />
         {imagePreview && <img src={imagePreview} alt="Preview" style={{ maxWidth: '200px', marginTop: '10px' }} />}

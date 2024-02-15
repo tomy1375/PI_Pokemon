@@ -1,19 +1,29 @@
-import { useEffect, useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getByName, getUser } from '../../redux/actions';
 import Navbar from '../../components/navbar/navbar.component';
 import Cards from '../../components/cards/cards.component';
+
 import './home.styles.css';
+import OrderFilter from '../../components/filters/filters';
 
 function Home() {
   const dispatch = useDispatch();
   const allUsers = useSelector((state) => state.allUsers);
   const [searchString, setSearchString] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [order, setOrder] = useState('A');
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
+    const fetchData = async () => {
+      await dispatch(getUser(order));
+      setInitialLoad(false);
+    };
+
+    fetchData();
+  }, [dispatch, order]);
 
   function handleChange(e) {
     setSearchString(e.target.value);
@@ -24,7 +34,6 @@ function Home() {
     dispatch(getByName(searchString));
   }
 
-  // Paginación
   const itemsPerPage = 12;
   const totalUsers = allUsers.length;
   const totalPages = Math.ceil(totalUsers / itemsPerPage);
@@ -46,7 +55,18 @@ function Home() {
     <div className='home'>
       <h2 className='home-title'>Pokemons</h2>
       <Navbar handleChange={handleChange} handleSubmit={handleSubmit} />
-      <Cards allUsers={displayedUsers} />
+
+      {allUsers.length === 0 && searchString !== '' && (
+        <h2>No existe el pokemon "{searchString}"<br /> <br />
+         <img src="https://giffiles.alphacoders.com/154/15437.gif" alt="" /></h2>
+      )}
+
+      {allUsers.length > 0 && (
+        <Cards allUsers={displayedUsers} />
+      )}
+
+      {/* Nuevo componente para el filtro de orden */}
+      <OrderFilter order={order} setOrder={setOrder} initialLoad={initialLoad} />
 
       {/* Paginación */}
       <div className="pagination">

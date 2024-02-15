@@ -2,6 +2,8 @@ import axios from "axios"
 
 export const GET_USER = "GET_USER"
 export const GET_BY_NAME = "GET_BY_NAME"
+export const ORDER_POKEMONS_ALPHATICALLY = "ORDER_POKEMONS_ALPHATICALLY"
+export const ORDER_POKEMONS_ATTACK = "ORDER_POKEMONS_ATTACK"
 
 
 export function getUser() {
@@ -23,3 +25,21 @@ export function getByName(name) {
         })
     }
 }
+
+export function orderPokemonsAlphabetically(value) {
+    return function (dispatch) {
+      return dispatch({
+        type: "ORDER_POKEMONS_ALPHATICALLY",
+        payload: value,
+      });
+    };
+  }
+
+  export function orderPokemonsAttack(value) {
+    return function (dispatch) {
+      return dispatch({
+        type: "ORDER_POKEMONS_ATTACK",
+        payload: value,
+      });
+    };
+  }
