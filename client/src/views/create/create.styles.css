@@ -1,49 +1,81 @@
 /* create.styles.css */
 
 .create-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 400px;
-    margin: auto;
-  }
-  
-  .create-form div {
-    margin-bottom: 15px;
-  }
-  
-  .create-form label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .create-form input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-  }
-  
-  .create-form span {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
-  }
-  
-  .create-form button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .create-form button:hover {
-    background-color: #45a049;
-  }
-  
-  .create-form img {
-    max-width: 200px;
-    margin-top: 10px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: auto;
+}
+
+.create-form div {
+  margin-bottom: 15px;
+}
+
+.create-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.create-form input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+.create-form .types-section {
+  margin-top: 20px;
+}
+
+.create-form button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.create-form button:hover {
+  background-color: #45a049;
+}
+
+.create-form img {
+  max-width: 200px;
+  margin-top: 10px;
+}
+
+.types-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.type-bubble {
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #eee;
+  transition: background-color 0.3s;
+}
+
+.type-bubble:hover {
+  background-color: #ccc;
+}
+
+.type-bubble.selected {
+  background-color: #4caf50;
+  color: white;
+}
+
+.valid {
+  color: green;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}

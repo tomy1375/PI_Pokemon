@@ -1,7 +1,7 @@
-// filters/OrderFilter.js
+// components/filters/OrderFilter.js
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { orderPokemonsAlphabetically, orderPokemonsAttack } from '../../redux/actions';
+import { orderPokemonsAlphabetically, orderPokemonsAttack, getUser } from '../../redux/actions';
 
 import "./filters.styles.css"
 
@@ -9,15 +9,16 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!initialLoad) {
+    if (initialLoad) {
+      // Si es la carga inicial, obtén los Pokémon con el orden por defecto ('A' en este caso)
+      dispatch(getUser('A'));
+    } else {
+      // Si no es la carga inicial, verifica el orden actual y ordena en consecuencia
       if (order === 'A' || order === 'D') {
-        // Si el orden actual es alfabético, ordenar alfabéticamente
         dispatch(orderPokemonsAlphabetically(order));
       } else if (order === 'AA' || order === 'DA') {
-        // Si el orden actual es ascendente por ataque, ordenar por ataque ascendente
         dispatch(orderPokemonsAttack('A'));
       } else if (order === 'AD' || order === 'DD') {
-        // Si el orden actual es descendente por ataque, ordenar por ataque descendente
         dispatch(orderPokemonsAttack('D'));
       }
     }
@@ -25,6 +26,14 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
 
   const handleOrderChange = (newOrder) => {
     setOrder(newOrder);
+
+    if (newOrder === 'A' || newOrder === 'D') {
+      dispatch(orderPokemonsAlphabetically(newOrder));
+    } else if (newOrder === 'AA' || newOrder === 'DA') {
+      dispatch(orderPokemonsAttack('A'));
+    } else if (newOrder === 'AD' || newOrder === 'DD') {
+      dispatch(orderPokemonsAttack('D'));
+    }
   };
 
   return (
@@ -46,3 +55,4 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
 };
 
 export default OrderFilter;
+

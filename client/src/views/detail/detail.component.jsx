@@ -42,7 +42,7 @@ function Detail() {
       ) : (
         <div className="card">
           <h2>{character.name}</h2>
-          <h2> hp: {character.hp}</h2>
+          <h2> hp: {character.hp || character.life}</h2>
           <img src={character.image} alt="imagen pokemon" />
           <h2>ataque: {character.attack}</h2>
           <h2>defensa: {character.defense}</h2>

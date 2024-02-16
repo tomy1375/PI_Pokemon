@@ -1,20 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './create.styles.css';
 import axios from 'axios';
+import { validation } from './validation';
 
 function Create() {
-  const [input, setInput] = useState({
-    name: '',
-    life: '',
-    attack: '',
-    defense: '',
-    speed: '',
-    height: '',
-    weight: '',
-    image: null,
-  });
-
-  const [error, setError] = useState({
+  const initialInputState = {
     name: '',
     life: '',
     attack: '',
@@ -23,86 +13,96 @@ function Create() {
     height: '',
     weight: '',
     image: '',
+    types: [],
+  };
+
+  const [input, setInput] = useState(initialInputState);
+  const [errors, setErrors] = useState({
+    name: 'Nombre es requerido',
+    life: 'Vida es requerida',
+    attack: 'Ataque es requerido',
+    defense: 'Defensa es requerida',
+    speed: 'Velocidad es requerida',
+    height: 'Altura es requerida',
+    weight: 'Peso es requerido',
+    image: 'Imagen es requerida',
   });
+  const [completedFields, setCompletedFields] = useState({
+    name: false,
+    life: false,
+    attack: false,
+    defense: false,
+    speed: false,
+    height: false,
+    weight: false,
+    image: false,
+    types: false,
+  });
+  const [typesList, setTypesList] = useState([]);
+  const [selectedType, setSelectedType] = useState('');
 
-  const validate = (input) => {
-    const isNumericLife = /^[0-9]+$/.test(input.life);
-    const isValidRangeLife = /^(0|[1-9][0-9]?|100)$/.test(input.life);
-
-    const isNumericAttack = /^[0-9]+$/.test(input.attack);
-    const isValidRangeAttack = /^(0|[1-9][0-9]?|100)$/.test(input.attack);
-
-    const isNumericDefense = /^[0-9]+$/.test(input.defense);
-    const isValidRangeDefense = /^(0|[1-9][0-9]?|100)$/.test(input.defense);
-
-    const isNumericSpeed = /^[0-9]+$/.test(input.speed);
-    const isValidRangeSpeed = /^(0|[1-9][0-9]?|100)$/.test(input.speed);
-
-    const isNumericHeight = /^[0-9]+$/.test(input.height);
-    const isValidRangeHeight = /^(0|[1-9][0-9]?|100)$/.test(input.height);
-
-    const isNumericWeight = /^[0-9]+$/.test(input.weight);
-    const isValidRangeWeight = /^(0|[1-9][0-9]?|100)$/.test(input.weight);
-
-    const isValidImage = input.image ? '' : 'Debe seleccionar una imagen';
-
-    const newErrors = {
-      life: isNumericLife && isValidRangeLife ? '' : 'La vida debe ser un número válido entre 1 y 100',
-      attack: isNumericAttack && isValidRangeAttack ? '' : 'El ataque debe ser un número válido entre 1 y 100',
-      defense: isNumericDefense && isValidRangeDefense ? '' : 'La defensa debe ser un número válido entre 1 y 100',
-      speed: isNumericSpeed && isValidRangeSpeed ? '' : 'La velocidad debe ser un número válido entre 1 y 100',
-      height: isNumericHeight && isValidRangeHeight ? '' : 'La altura debe ser un número válido entre 1 y 100',
-      weight: isNumericWeight && isValidRangeWeight ? '' : 'El peso debe ser un número válido entre 1 y 100',
-      image: isValidImage,
+  useEffect(() => {
+    const fetchTypes = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/types');
+        setTypesList(response.data.types);
+      } catch (error) {
+        console.error('Error al obtener la lista de tipos', error);
+      }
     };
 
-    setError({ ...error, ...newErrors });
+    fetchTypes();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInput({ ...input, [name]: value });
+    const validationError = validation({ ...input, [name]: value });
+    setErrors({ ...errors, [name]: validationError[name] });
+    setCompletedFields({ ...completedFields, [name]: !validationError[name] });
   };
 
-  const handleImageChange = (e) => {
-    const selectedImage = e.target.files[0];
-    setInput({ ...input, image: selectedImage });
-    validate(input);
+  const handleTypesChange = (selectedTypes) => {
+    setInput({ ...input, types: selectedTypes });
+    setCompletedFields({ ...completedFields, types: selectedTypes.length > 0 });
   };
 
-  const HandleChange = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-    validate(input);
+  const handleTypeClick = (type) => {
+    setSelectedType(type);
   };
 
+  const handleAddType = () => {
+    if (selectedType && !input.types.includes(selectedType)) {
+      const updatedTypes = [...input.types, selectedType];
+      setInput({ ...input, types: updatedTypes });
+      setCompletedFields({ ...completedFields, types: updatedTypes.length > 0 });
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    validate(input);
-
-    if (
-      !error.life &&
-      !error.attack &&
-      !error.defense &&
-      !error.name &&
-      !error.speed &&
-      !error.height &&
-      !error.weight &&
-      !error.image
-    ) {
-      try  {
-        const response = await axios.post('http://localhost:3001/pokemons', {
-          name: input.name,
-          life: input.life,
-          attack: input.attack,
-          defense: input.defense,
-          speed: input.speed,
-          height: input.height,
-          weight: input.weight,
-          // La imagen no se incluye aquí, ya que el formato JSON no maneja archivos binarios directamente
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
+  
+    const validationErrors = validation(input);
+    setErrors(validationErrors);
+  
+    if (Object.values(validationErrors).every((error) => !error)) {
+      try {
+        const response = await axios.post('http://localhost:3001/pokemons', input);
+  
         if (response.status === 200) {
-          console.log('¡Pokémon creado con éxito!');
-          // Puedes redirigir a otra página o realizar acciones adicionales después de crear el Pokémon
+          const pokemonName = input.name;
+          alert(`¡Pokémon ${pokemonName} creado con éxito!`);
+          setInput(initialInputState);
+          setCompletedFields({
+            name: false,
+            life: false,
+            attack: false,
+            defense: false,
+            speed: false,
+            height: false,
+            weight: false,
+            image: false,
+            types: false,
+          });
         } else {
           console.error('Error al crear Pokémon');
         }
@@ -111,56 +111,95 @@ function Create() {
       }
     } else {
       console.log('Corrige los errores antes de enviar el formulario.');
+      console.log(validationErrors); // Agrega esta línea para imprimir los errores en la consola
     }
   };
-
-  const imagePreview = input.image ? URL.createObjectURL(input.image) : null;
-
+  
   return (
     <form className="create-form" onSubmit={handleSubmit}>
       <div>
         <br /><br /><br /><br />
-        <label> Imagen </label>
-        <input type="file" accept="image/*" name="image" onChange={handleImageChange} />
-        {imagePreview && <img src={imagePreview} alt="Preview" style={{ maxWidth: '200px', marginTop: '10px' }} />}
-        <span>{error.image}</span>
+        <label> Imagen (URL) </label>
+        <input type="text" name="image" value={input.image} onChange={handleChange} />
+        {completedFields.image && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.image}</span>
+        {input.image && <img src={input.image} alt="Imagen previa" style={{ maxWidth: '200px', marginTop: '10px' }} />}
       </div>
       <div>
         <label> Nombre </label>
-        <input name="name" value={input.name} onChange={HandleChange} />
-        <span>{error.name}</span>
+        <input name="name" value={input.name} onChange={handleChange} />
+        {completedFields.name && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.name}</span>
       </div>
       <div>
         <label> Vida </label>
-        <input name="life" value={input.life} onChange={HandleChange} />
-        <span>{error.life}</span>
+        <input name="life" value={input.life} onChange={handleChange} />
+        {completedFields.life && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.life}</span>
       </div>
       <div>
         <label> Ataque </label>
-        <input name="attack" value={input.attack} onChange={HandleChange} />
-        <span>{error.attack}</span>
+        <input name="attack" value={input.attack} onChange={handleChange} />
+        {completedFields.attack && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.attack}</span>
       </div>
       <div>
         <label> Defensa </label>
-        <input name="defense" value={input.defense} onChange={HandleChange} />
-        <span>{error.defense}</span>
+        <input name="defense" value={input.defense} onChange={handleChange} />
+        {completedFields.defense && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.defense}</span>
       </div>
       <div>
         <label> Velocidad </label>
-        <input name="speed" value={input.speed} onChange={HandleChange} />
-        <span>{error.speed}</span>
+        <input name="speed" value={input.speed} onChange={handleChange} />
+        {completedFields.speed && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.speed}</span>
       </div>
       <div>
         <label> Altura </label>
-        <input name="height" value={input.height} onChange={HandleChange} />
-        <span>{error.height}</span>
+        <input name="height" value={input.height} onChange={handleChange} />
+        {completedFields.height && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.height}</span>
       </div>
       <div>
         <label> Peso </label>
-        <input name="weight" value={input.weight} onChange={HandleChange} />
-        <span>{error.weight}</span>
+        <input name="weight" value={input.weight} onChange={handleChange} />
+        {completedFields.weight && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.weight}</span>
       </div>
-      {error.life || error.attack || error.defense || error.name || error.speed || error.height || error.weight ? null : (
+      <div>
+        <label> Tipos </label>
+        <button type="button" onClick={() => handleTypesChange([])}>
+          Limpiar Tipos
+        </button>
+        <div className="types-bubbles">
+          {typesList.map((type) => (
+            <div
+              key={type}
+              onClick={() => handleTypeClick(type)}
+              className={`type-bubble ${selectedType === type ? 'selected' : ''}`}
+            >
+              {type}
+            </div>
+          ))}
+        </div>
+        <div>
+          <button type="button" onClick={() => handleAddType()}>
+            Agregar Tipo
+          </button>
+          {input.types.map((type) => (
+            <span key={type} style={{ margin: '0 5px' }}>
+              {type}
+            </span>
+          ))}
+        </div>
+        {completedFields.types && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.types}</span>
+      </div>
+        {completedFields.types && <span style={{ color: 'green' }}>✅</span>}
+        <span>{errors.types}</span>
+      
+      {Object.values(errors).every((error) => !error) && (
         <button type="submit">Crear Pokémon</button>
       )}
     </form>

@@ -1,12 +1,11 @@
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getByName, getUser } from '../../redux/actions';
 import Navbar from '../../components/navbar/navbar.component';
 import Cards from '../../components/cards/cards.component';
+import OrderFilter from '../../components/filters/filters';
 
 import './home.styles.css';
-import OrderFilter from '../../components/filters/filters';
 
 function Home() {
   const dispatch = useDispatch();
@@ -20,6 +19,7 @@ function Home() {
     const fetchData = async () => {
       await dispatch(getUser(order));
       setInitialLoad(false);
+      setCurrentPage(1); // Establecer currentPage a 1 cuando cambia el orden
     };
 
     fetchData();
