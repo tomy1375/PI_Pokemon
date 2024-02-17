@@ -49,7 +49,7 @@ function Detail() {
           <h2>velocidad: {character.speed}</h2>
           <h2>altura: {character.height}</h2>
           <h2>peso: {character.weight}</h2>
-          <h2>tipo: {character.types}</h2>
+          <h2>tipo: {character.types}</h2> {/* Corregir aquí para acceder directamente a character.types */}
         </div>
       )}
     </div>

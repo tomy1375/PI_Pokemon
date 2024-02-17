@@ -1,5 +1,10 @@
 /* create.styles.css */
 
+.form-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .create-form {
   display: flex;
   flex-direction: column;
@@ -78,4 +83,27 @@
   font-size: 12px;
   margin-top: 5px;
   display: block;
+}
+
+.error-message {
+  color: red;
+}
+
+.info-box {
+  width: 302px;
+  height: 312px;
+  padding: 60px;
+  background-color: #f8d7da;
+  border: 1px solid #721c24;
+  border-radius: 5px;
+  position: absolute;
+  left: 94px;
+  top: 286px;
+  overflow: hidden;
+}
+.info-box p {
+  margin: 0; /* Asegura que no haya márgenes internos en el párrafo */
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Evita que el texto desborde */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) si el texto es demasiado largo */
 }

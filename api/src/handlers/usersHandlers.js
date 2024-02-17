@@ -1,4 +1,4 @@
-const { getUserById, getUserByName, getAllUser } = require("../controllers/usersControllers")
+const {getUserByName, getAllUser, getUserById } = require("../controllers/usersControllers")
 
 const getDetailHandler = async (req, res) => {
     const { id } = req.params;

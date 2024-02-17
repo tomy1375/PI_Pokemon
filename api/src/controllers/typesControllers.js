@@ -2,6 +2,7 @@
 const { Types } = require("../db");
 const axios = require('axios');
 
+
 const getAndSaveTypes = async () => {
     try {
         const apiURL = "https://pokeapi.co/api/v2/type";

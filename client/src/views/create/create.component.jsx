@@ -116,94 +116,111 @@ function Create() {
   };
   
   return (
-    <form className="create-form" onSubmit={handleSubmit}>
-      <div>
-        <br /><br /><br /><br />
-        <label> Imagen (URL) </label>
-        <input type="text" name="image" value={input.image} onChange={handleChange} />
-        {completedFields.image && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.image}</span>
-        {input.image && <img src={input.image} alt="Imagen previa" style={{ maxWidth: '200px', marginTop: '10px' }} />}
+    <div className="form-container">
+    
+      <div className="info-box">
+        
+        <p>Para poner una imagen, sigue estos pasos:</p>
+        <ol>
+  <li>Paso 1: Ingresa la URL de la imagen en el campo "Imagen (URL)".</li>
+  <li>Paso 2: Si la imagen no se muestra es porque estás ingresando incorrectamente la URL.</li>
+  <li>Paso 3: Puedes probar haciendo clic derecho sobre la imagen y seleccionar "Abrir imagen en una nueva pestaña".</li>
+  <li>Paso 4: Copia y pega la nueva URL obtenida.</li>
+  <li>En esta página puedes buscar imágenes para tu Pokémon.<br/> <a href="https://pics.alphacoders.com/" target="_blank" rel="noopener noreferrer">https://pics.alphacoders.com/</a>.</li>
+      </ol>
+
       </div>
-      <div>
-        <label> Nombre </label>
-        <input name="name" value={input.name} onChange={handleChange} />
-        {completedFields.name && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.name}</span>
-      </div>
-      <div>
-        <label> Vida </label>
-        <input name="life" value={input.life} onChange={handleChange} />
-        {completedFields.life && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.life}</span>
-      </div>
-      <div>
-        <label> Ataque </label>
-        <input name="attack" value={input.attack} onChange={handleChange} />
-        {completedFields.attack && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.attack}</span>
-      </div>
-      <div>
-        <label> Defensa </label>
-        <input name="defense" value={input.defense} onChange={handleChange} />
-        {completedFields.defense && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.defense}</span>
-      </div>
-      <div>
-        <label> Velocidad </label>
-        <input name="speed" value={input.speed} onChange={handleChange} />
-        {completedFields.speed && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.speed}</span>
-      </div>
-      <div>
-        <label> Altura </label>
-        <input name="height" value={input.height} onChange={handleChange} />
-        {completedFields.height && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.height}</span>
-      </div>
-      <div>
-        <label> Peso </label>
-        <input name="weight" value={input.weight} onChange={handleChange} />
-        {completedFields.weight && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.weight}</span>
-      </div>
-      <div>
-        <label> Tipos </label>
-        <button type="button" onClick={() => handleTypesChange([])}>
-          Limpiar Tipos
-        </button>
-        <div className="types-bubbles">
-          {typesList.map((type) => (
-            <div
-              key={type}
-              onClick={() => handleTypeClick(type)}
-              className={`type-bubble ${selectedType === type ? 'selected' : ''}`}
-            >
-              {type}
-            </div>
-          ))}
+      
+      <form className="create-form" onSubmit={handleSubmit}>
+        <div>
+          <br /><br /><br /><br />
+          <label> Imagen (URL) </label>
+          <input type="text" name="image" value={input.image} onChange={handleChange} />
+          {completedFields.image && <span style={{ color: 'green' }}>✅</span>}
+          <span className='error-message'>{errors.image}</span>
+          {input.image && <img src={input.image} alt="Imagen previa" style={{ maxWidth: '200px', marginTop: '10px' }} />}
+        </div>
+        <div className="form-content">
+          <div className="input-group">
+            <label> Nombre </label>
+            <input name="name" value={input.name} onChange={handleChange} />
+            {completedFields.name && <span className="validation-icon">✅</span>}
+            <span className='error-message'>{errors.name}</span>
+          </div>
+          <div className="input-group">
+            <label> Vida </label>
+            <input name="life" value={input.life} onChange={handleChange} />
+            {completedFields.life && <span className="validation-icon">✅</span>}
+            <span className='error-message'>{errors.life}</span>
+          </div>
+          <div className="input-group">
+            <label> Ataque </label>
+            <input name="attack" value={input.attack} onChange={handleChange} />
+            {completedFields.attack && <span className="validation-icon">✅</span>}
+            <span className='error-message'>{errors.attack}</span>
+          </div>
+          <div className="input-group">
+            <label> Defensa </label>
+            <input name="defense" value={input.defense} onChange={handleChange} />
+            {completedFields.defense && <span className="validation-icon">✅</span>}
+            <span className='error-message'>{errors.defense}</span>
+          </div>
+          <div className="input-group">
+            <label> Velocidad </label>
+            <input name="speed" value={input.speed} onChange={handleChange} />
+            {completedFields.speed && <span className="validation-icon">✅</span>}
+            <span className='error-message'>{errors.speed}</span>
+          </div>
+          <div className="input-group">
+            <label> Altura </label>
+            <input name="height" value={input.height} onChange={handleChange} />
+            {completedFields.height && <span className="validation-icon">✅</span>}
+            <span className='error-message'>{errors.height}</span>
+          </div>
+          <div className="input-group">
+            <label> Peso </label>
+            <input name="weight" value={input.weight} onChange={handleChange} />
+            {completedFields.weight && <span className="validation-icon">✅</span>}
+            <span className='error-message'>{errors.weight}</span>
+          </div>
         </div>
         <div>
-          <button type="button" onClick={() => handleAddType()}>
-            Agregar Tipo
+          <label> Tipos </label>
+          <button type="button" onClick={() => handleTypesChange([])}>
+            Limpiar Tipos
           </button>
-          {input.types.map((type) => (
-            <span key={type} style={{ margin: '0 5px' }}>
-              {type}
-            </span>
-          ))}
+          <div className="types-bubbles">
+            {typesList.map((type) => (
+              <div
+                key={type}
+                onClick={() => handleTypeClick(type)}
+                className={`type-bubble ${selectedType === type ? 'selected' : ''}`}
+              >
+                {type}
+              </div>
+            ))}
+          </div>
+          <div>
+            <button type="button" onClick={() => handleAddType()}>
+              Agregar Tipo
+            </button>
+            {input.types.map((type) => (
+              <span key={type} style={{ margin: '0 5px' }}>
+                {type}
+              </span>
+            ))}
+          </div>
+          {completedFields.types && <span style={{ color: 'green' }}>✅</span>}
+          <span>{errors.types}</span>
         </div>
-        {completedFields.types && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.types}</span>
-      </div>
-        {completedFields.types && <span style={{ color: 'green' }}>✅</span>}
-        <span>{errors.types}</span>
-      
-      {Object.values(errors).every((error) => !error) && (
-        <button type="submit">Crear Pokémon</button>
-      )}
-    </form>
+        {Object.values(errors).every((error) => !error) && (
+          <button type="submit">Crear Pokémon</button>
+        )}
+      </form>
+    </div>
   );
+  
 }
+        
 
 export default Create;
