@@ -17,27 +17,6 @@ const infoCleaner = (data) => {
 }
 
 
-// const getUserFromDatabase = async (name) => {
-//     try {
-//       // Buscar el usuario en la base de datos utilizando Sequelize
-//       const user = await User.findOne({
-//         where: {
-//           name: {
-//             [Sequelize.Op.iLike]: name // Utiliza iLike para hacer la comparación insensible a mayúsculas y minúsculas
-//           }
-//         }
-//       });
-  
-//       // Devolver el usuario si se encuentra, o null si no se encuentra
-//       return user || null;
-//     } catch (error) {
-//       // Manejar errores de consulta a la base de datos
-//       console.error(`Error fetching user from database: ${error.message}`);
-//       throw error;
-//     }
-//   };
-  
-
 const getUserById = async (id, source) => {
   let user;
 
@@ -100,63 +79,6 @@ const getUserById = async (id, source) => {
   return user;
 };
 
-
-
-  
-  
-
-const getAllUser = async () => {
-  try {
-    const usersDB = await Pokemon.findAll({ include: Types });
-    const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=100")).data;
-    const userApi = infoCleaner(infoApi);
-
-    const userDetailedInfoPromises = userApi.map(async (user) => {
-      if (user.url) {
-        const detailedInfo = (await axios.get(user.url)).data;
-        const hpStat = detailedInfo.stats.find((stat) => stat.stat.name === "hp");
-
-        const officialArtworkUrl =
-          detailedInfo.sprites.other["official-artwork"].front_default;
-
-        return {
-          id: detailedInfo.id,
-          name: user.name,
-          height: detailedInfo.height,
-          weight: detailedInfo.weight,
-          types: detailedInfo.types.map((type) => ({ type: type.type.name })),
-          hp: hpStat ? hpStat.base_stat : 0,
-          attack: detailedInfo.stats.find((stat) => stat.stat.name === "attack")?.base_stat || 0,
-          defense: detailedInfo.stats.find((stat) => stat.stat.name === "defense")?.base_stat || 0,
-          speed: detailedInfo.stats.find((stat) => stat.stat.name === "speed")?.base_stat || 0,
-          image: officialArtworkUrl,
-          created: false
-        };
-      }
-      return null;
-    });
-
-    const userDetailedInfo = await Promise.all(userDetailedInfoPromises);
-
-    // Ajustar la estructura antes de devolverla
-    const adjustedUserDetailedInfo = userDetailedInfo.map((user) => {
-      if (user) {
-        return {
-          ...user,
-          types: user.types.map((type) => type.type),
-        };
-      }
-      return null;
-    });
-
-    return [...usersDB, ...adjustedUserDetailedInfo.filter(Boolean)];
-  } catch (error) {
-    throw new Error(`Error fetching all users: ${error.message}`);
-  }
-};
-
-
-
 const getUserByName = async (name) => {
   try {
     const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon", {
@@ -179,6 +101,16 @@ const getUserByName = async (name) => {
           through: { attributes: [] }, // Esto evita que se incluyan las propiedades adicionales de la relación Many-to-Many
         },
       ],
+    });
+    const modifiedResults = usersDB.map((pokemon) => {
+      // Extrae los nombres de los types como un arreglo de strings
+      const typeNamesArray = pokemon.types.map((typeObj) => typeObj.type);
+    
+      // Crea un nuevo objeto con la misma información, pero con "types" como un arreglo de strings
+      return {
+        ...pokemon.toJSON(),
+        types: typeNamesArray,
+      };
     });
 
     const userFiltered = userApi.filter((user) => user.name.toLowerCase() === lowerCaseName);
@@ -221,7 +153,7 @@ const getUserByName = async (name) => {
       return null;
     });
 
-    const result = usersDB ? [...usersDB, ...adjustedUserDetailedInfo.filter(Boolean)] : adjustedUserDetailedInfo.filter(Boolean);
+    const result = usersDB ? [...modifiedResults, ...adjustedUserDetailedInfo.filter(Boolean)] : adjustedUserDetailedInfo.filter(Boolean);
 
     return result;
   } catch (error) {
@@ -229,6 +161,73 @@ const getUserByName = async (name) => {
   }
 };
 
+const getAllUser = async () => {
+  try {
+    const usersDB = await Pokemon.findAll({ include: [
+      {
+        model: Types,
+        attributes: ['type'], // Aquí seleccionamos solo el atributo 'type'
+        through: { attributes: [] }, // Esto evita que se incluyan las propiedades adicionales de la relación Many-to-Many
+      },
+    ]});
+
+    const modifiedResults = usersDB.map((pokemon) => {
+      // Extrae los tipos como un arreglo de strings
+      const typesArray = pokemon.types.map((typeObj) => typeObj.type);
+    
+      // Crea un nuevo objeto con la misma información, pero con "types" como un arreglo de strings
+      return {
+        ...pokemon.toJSON(),
+        types: typesArray,
+      };
+    });
+    
+    const infoApi = (await axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=100")).data;
+    const userApi = infoCleaner(infoApi);
+
+    const userDetailedInfoPromises = userApi.map(async (user) => {
+      if (user.url) {
+        const detailedInfo = (await axios.get(user.url)).data;
+        const hpStat = detailedInfo.stats.find((stat) => stat.stat.name === "hp");
+
+        const officialArtworkUrl =
+          detailedInfo.sprites.other["official-artwork"].front_default;
+
+        return {
+          id: detailedInfo.id,
+          name: user.name,
+          height: detailedInfo.height,
+          weight: detailedInfo.weight,
+          types: detailedInfo.types.map((type) => ({ type: type.type.name })),
+          hp: hpStat ? hpStat.base_stat : 0,
+          attack: detailedInfo.stats.find((stat) => stat.stat.name === "attack")?.base_stat || 0,
+          defense: detailedInfo.stats.find((stat) => stat.stat.name === "defense")?.base_stat || 0,
+          speed: detailedInfo.stats.find((stat) => stat.stat.name === "speed")?.base_stat || 0,
+          image: officialArtworkUrl,
+          created: false
+        };
+      }
+      return null;
+    });
+
+    const userDetailedInfo = await Promise.all(userDetailedInfoPromises);
+
+    // Ajustar la estructura antes de devolverla
+    const adjustedUserDetailedInfo = userDetailedInfo.map((user) => {
+      if (user) {
+        return {
+          ...user,
+          types: user.types.map((type) => type.type),
+        };
+      }
+      return null;
+    });
+
+    return [...modifiedResults, ...adjustedUserDetailedInfo.filter(Boolean)];
+  } catch (error) {
+    throw new Error(`Error fetching all users: ${error.message}`);
+  }
+};
 
 
 
