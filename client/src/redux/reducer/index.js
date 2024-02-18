@@ -1,4 +1,4 @@
-import { GET_USER, GET_BY_NAME, ORDER_POKEMONS_ALPHATICALLY, ORDER_POKEMONS_ATTACK } from "../actions"
+import { GET_USER, GET_BY_NAME, ORDER_POKEMONS_ALPHATICALLY, ORDER_POKEMONS_ATTACK, FILTER_POKEMONS_TYPES } from "../actions"
 
 let initialState = {allUsers:[],usersCopy:[], post:[]}
 
@@ -38,6 +38,7 @@ function rootReducer(state = initialState, action) {
                       ...state,
                       allUsers: orderPokemonsAttack
                     };
+         case FILTER_POKEMONS_TYPES:
         default:
             return state
     }

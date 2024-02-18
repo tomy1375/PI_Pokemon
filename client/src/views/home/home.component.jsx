@@ -7,6 +7,7 @@ import OrderFilter from '../../components/filters/filters';
 
 import './home.styles.css';
 
+
 function Home() {
   const dispatch = useDispatch();
   const allUsers = useSelector((state) => state.allUsers);
@@ -52,21 +53,31 @@ function Home() {
   const displayedUsers = allUsers.slice(startIndex, endIndex);
 
   return (
-    <div className='home'>
+    <div className='home'><br />
       <h2 className='home-title'>Pokemons</h2>
+    {/* Nuevo componente para el filtro de orden */}
+    <OrderFilter order={order} setOrder={setOrder} initialLoad={initialLoad} />
       <Navbar handleChange={handleChange} handleSubmit={handleSubmit} />
 
-      {allUsers.length === 0 && searchString !== '' && (
+      {initialLoad && (
+        <div className="loading-container">
+          <img
+            src="https://giffiles.alphacoders.com/191/1918.gif"
+            alt="Loading GIF"
+            className="loading-gif"
+          />
+        </div>
+      )}
+
+      {allUsers.length === 0 && !initialLoad && searchString !== '' && (
         <h2>No existe el pokemon "{searchString}"<br /> <br />
          <img src="https://giffiles.alphacoders.com/154/15437.gif" alt="" /></h2>
       )}
 
-      {allUsers.length > 0 && (
+      {allUsers.length > 0 && !initialLoad && (
         <Cards allUsers={displayedUsers} />
       )}
 
-      {/* Nuevo componente para el filtro de orden */}
-      <OrderFilter order={order} setOrder={setOrder} initialLoad={initialLoad} />
 
       {/* Paginación */}
       <div className="pagination">
@@ -85,3 +96,5 @@ function Home() {
 }
 
 export default Home;
+
+

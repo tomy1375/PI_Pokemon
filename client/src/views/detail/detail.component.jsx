@@ -41,15 +41,17 @@ function Detail() {
         </div>
       ) : (
         <div className="card">
-          <h2>{character.name}</h2>
-          <h2> hp: {character.hp || character.life}</h2>
           <img src={character.image} alt="imagen pokemon" />
-          <h2>ataque: {character.attack}</h2>
-          <h2>defensa: {character.defense}</h2>
-          <h2>velocidad: {character.speed}</h2>
-          <h2>altura: {character.height}</h2>
-          <h2>peso: {character.weight}</h2>
-          <h2>tipo: {character.types}</h2> {/* Corregir aquí para acceder directamente a character.types */}
+          <div className="card-info">
+            <h1>{character.name}</h1>
+            <h2> hp: {character.hp || character.life}</h2>
+            <h2>ataque: {character.attack}</h2>
+            <h2>defensa: {character.defense}</h2>
+            <h2>velocidad: {character.speed}</h2>
+            <h2>altura: {character.height}</h2>
+            <h2>peso: {character.weight}</h2>
+            <h2>tipo: {character.types.join(', ')}</h2>
+          </div>
         </div>
       )}
     </div>

@@ -1,29 +1,35 @@
 /* detail.styles.css */
 
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .card {
-    border: 1px solid #00000000;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: rgb(235, 228, 205);
-    width: 425px; /* Ajusta este valor según tus preferencias */
-  }
-  
-  .card h2 {
-    margin-bottom: 8px;
-  }
-  
-  .card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.card {
+  display: flex; /* Utiliza flexbox para la disposición interna */
+  border: 1px solid #00000000;
+  border-radius: 8px;
+  padding: 78px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(235, 228, 205);
+  width: 760px; /* Ancho total de la tarjeta */
+}
+
+.card img {
+  max-width: 50%; /* La imagen ocupará la mitad del ancho de la tarjeta */
+  height: auto;
+  border-radius: 4px;
+  margin-right: 16px; /* Espaciado entre la imagen y la información a la derecha */
+  object-fit: cover; /* Evita que la imagen se deforme y cubre completamente el contenedor */
+}
+
+.card-info {
+  flex: 1; /* La información ocupará el espacio restante a la derecha */
+}
+
+.card h2 {
+  margin-bottom: 8px;
+}
