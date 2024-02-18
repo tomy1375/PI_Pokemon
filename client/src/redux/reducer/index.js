@@ -39,6 +39,12 @@ function rootReducer(state = initialState, action) {
                       allUsers: orderPokemonsAttack
                     };
          case FILTER_POKEMONS_TYPES:
+                        const pokemonsByTypes = state.usersCopy.filter((pokemon) => pokemon.types.includes(action.payload))
+                        return {
+                            ...state,
+                            allUsers: pokemonsByTypes,
+                        };
+                    
         default:
             return state
     }
