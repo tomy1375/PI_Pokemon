@@ -1,4 +1,4 @@
-import { GET_USER, GET_BY_NAME, ORDER_POKEMONS_ALPHATICALLY, ORDER_POKEMONS_ATTACK, FILTER_POKEMONS_TYPES } from "../actions"
+import { GET_USER, GET_BY_NAME, ORDER_POKEMONS_ALPHATICALLY, ORDER_POKEMONS_ATTACK, FILTER_POKEMONS_TYPES, FILTER_POKEMONS_ORIGIN } from "../actions"
 
 let initialState = {allUsers:[],usersCopy:[], post:[]}
 
@@ -44,6 +44,14 @@ function rootReducer(state = initialState, action) {
                             ...state,
                             allUsers: pokemonsByTypes,
                         };
+        case FILTER_POKEMONS_ORIGIN:
+            const PokemonOrigin = state.usersCopy.filter(
+                (pokemon) => (action.payload === "A" ? typeof pokemon.id === "number" : typeof pokemon.id === "string")
+              );
+              return {
+                ...state,
+                allUsers: PokemonOrigin,
+              };
                     
         default:
             return state

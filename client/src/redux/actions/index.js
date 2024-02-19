@@ -5,6 +5,7 @@ export const GET_BY_NAME = "GET_BY_NAME"
 export const ORDER_POKEMONS_ALPHATICALLY = "ORDER_POKEMONS_ALPHATICALLY"
 export const ORDER_POKEMONS_ATTACK = "ORDER_POKEMONS_ATTACK"
 export const FILTER_POKEMONS_TYPES = 'FILTER_POKEMONS_TYPES'
+export const FILTER_POKEMONS_ORIGIN = "FILTER_POKEMONS_ORIGIN"
 
 
 export function getUser() {
@@ -49,6 +50,15 @@ export function orderPokemonsAlphabetically(value) {
     return function (dispatch) {
       return dispatch({
         type: "FILTER_POKEMONS_TYPES",
+        payload: value,
+      });
+    };
+  }
+
+  export function filterPokemonsOrigin(value) {
+    return function (dispatch) {
+      return dispatch({
+        type: "FILTER_POKEMONS_ORIGIN",
         payload: value,
       });
     };

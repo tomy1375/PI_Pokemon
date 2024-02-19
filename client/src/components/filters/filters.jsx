@@ -1,7 +1,7 @@
 // components/filters/OrderFilter.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { orderPokemonsAlphabetically, orderPokemonsAttack, getUser, filterPokemonsTypes } from '../../redux/actions';
+import { orderPokemonsAlphabetically, orderPokemonsAttack, getUser, filterPokemonsTypes, filterPokemonsOrigin } from '../../redux/actions';
 
 import "./filters.styles.css"
 
@@ -20,6 +20,9 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
         dispatch(orderPokemonsAttack('A'));
       } else if (order === 'AD' || order === 'DD') {
         dispatch(orderPokemonsAttack('D'));
+      } else if (order === 'A' || order === 'C') {
+        // Utilizo la nueva acción orderPokemonsOrigin en lugar de filterPokemonsOrigin
+        dispatch(filterPokemonsOrigin(order));
       }
     }
     const typesFromAPI = ["normal",
@@ -91,6 +94,15 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
       </select>
       <button onClick={handleFilterByType}>
         Filtrar por Tipo
+      </button>
+       {/* Agregado el botón de filtro de origen */}
+       <button onClick={() => handleOrderChange('A')} className={order === 'A' ? 'active' : ''}>
+        Filtrar por api
+        {order === 'A' === 'Filtrar por Creado'}
+      </button>
+      <button onClick={() => handleOrderChange('C')} className={order === 'C' ? 'active' : ''}>
+        Filtrar por Creados
+        {order === 'C' === 'Filtrar por API'}
       </button>
     </div>
   );
