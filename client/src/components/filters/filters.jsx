@@ -102,8 +102,8 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
         <option value="DEFAULT" disabled hidden>
           --
         </option>
-        <option value="A">API</option>
-        <option value="B">CREATED</option>
+        <option value="A">CREATED</option>
+        <option value="B">API</option>
       </select>
 
       <label>TYPES</label>

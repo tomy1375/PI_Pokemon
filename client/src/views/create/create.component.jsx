@@ -134,6 +134,8 @@ function Create() {
   };
 
   return (
+    <div className="create-container">
+
     <div className="form-container">
       <div className="info-box">
         <p>Para poner una imagen, sigue estos pasos:</p>
@@ -157,7 +159,7 @@ function Create() {
               href="https://pics.alphacoders.com/"
               target="_blank"
               rel="noopener noreferrer"
-            >
+              >
               https://pics.alphacoders.com/
             </a>
             .
@@ -177,16 +179,16 @@ function Create() {
             name="image"
             value={input.image}
             onChange={handleChange}
-          />
+            />
           {completedFields.image && <span style={{ color: "green" }}>✅</span>}
           <span className="error-message">{errors.image}</span>
           {input.image && (
             <img
-              src={input.image}
-              alt="Imagen previa"
-              style={{ maxWidth: "200px", marginTop: "10px" }}
+            src={input.image}
+            alt="Imagen previa"
+            style={{ maxWidth: "200px", marginTop: "10px" }}
             />
-          )}
+            )}
         </div>
         <div className="form-content">
           <div className="input-group">
@@ -194,7 +196,7 @@ function Create() {
             <input name="name" value={input.name} onChange={handleChange} />
             {completedFields.name && (
               <span className="validation-icon">✅</span>
-            )}
+              )}
             <span className="error-message">{errors.name}</span>
           </div>
           <div className="input-group">
@@ -202,7 +204,7 @@ function Create() {
             <input name="life" value={input.life} onChange={handleChange} />
             {completedFields.life && (
               <span className="validation-icon">✅</span>
-            )}
+              )}
             <span className="error-message">{errors.life}</span>
           </div>
           <div className="input-group">
@@ -210,7 +212,7 @@ function Create() {
             <input name="attack" value={input.attack} onChange={handleChange} />
             {completedFields.attack && (
               <span className="validation-icon">✅</span>
-            )}
+              )}
             <span className="error-message">{errors.attack}</span>
           </div>
           <div className="input-group">
@@ -219,10 +221,10 @@ function Create() {
               name="defense"
               value={input.defense}
               onChange={handleChange}
-            />
+              />
             {completedFields.defense && (
               <span className="validation-icon">✅</span>
-            )}
+              )}
             <span className="error-message">{errors.defense}</span>
           </div>
           <div className="input-group">
@@ -230,7 +232,7 @@ function Create() {
             <input name="speed" value={input.speed} onChange={handleChange} />
             {completedFields.speed && (
               <span className="validation-icon">✅</span>
-            )}
+              )}
             <span className="error-message">{errors.speed}</span>
           </div>
           <div className="input-group">
@@ -238,7 +240,7 @@ function Create() {
             <input name="height" value={input.height} onChange={handleChange} />
             {completedFields.height && (
               <span className="validation-icon">✅</span>
-            )}
+              )}
             <span className="error-message">{errors.height}</span>
           </div>
           <div className="input-group">
@@ -246,7 +248,7 @@ function Create() {
             <input name="weight" value={input.weight} onChange={handleChange} />
             {completedFields.weight && (
               <span className="validation-icon">✅</span>
-            )}
+              )}
             <span className="error-message">{errors.weight}</span>
           </div>
         </div>
@@ -258,11 +260,11 @@ function Create() {
           <div className="types-bubbles">
             {typesList.map((type) => (
               <div
-                key={type}
-                onClick={() => handleTypeClick(type)}
-                className={`type-bubble ${
-                  selectedType === type ? "selected" : ""
-                } ${isTypeSelected(type) ? "selected" : ""}`}
+              key={type}
+              onClick={() => handleTypeClick(type)}
+              className={`type-bubble ${
+                selectedType === type ? "selected" : ""
+              } ${isTypeSelected(type) ? "selected" : ""}`}
               >
                 {type}
               </div>
@@ -280,9 +282,10 @@ function Create() {
         </div>
         {Object.values(errors).every((error) => !error) && (
           <button type="submit">Crear Pokémon</button>
-        )}
+          )}
       </form>
     </div>
+          </div>
   );
 }
         
