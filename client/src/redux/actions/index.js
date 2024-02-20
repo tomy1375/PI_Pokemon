@@ -6,7 +6,7 @@ export const ORDER_POKEMONS_ALPHATICALLY = "ORDER_POKEMONS_ALPHATICALLY"
 export const ORDER_POKEMONS_ATTACK = "ORDER_POKEMONS_ATTACK"
 export const FILTER_POKEMONS_TYPES = 'FILTER_POKEMONS_TYPES'
 export const FILTER_POKEMONS_ORIGIN = "FILTER_POKEMONS_ORIGIN"
-
+export const RESET_FILTERS = "RESET_FILTERS"
 
 export function getUser() {
     return async function(dispatch){
@@ -61,5 +61,11 @@ export function orderPokemonsAlphabetically(value) {
         type: "FILTER_POKEMONS_ORIGIN",
         payload: value,
       });
+    };
+  }
+
+  export function resetFilters() {
+    return {
+      type: "RESET_FILTERS",
     };
   }

@@ -1,4 +1,4 @@
-import { GET_USER, GET_BY_NAME, ORDER_POKEMONS_ALPHATICALLY, ORDER_POKEMONS_ATTACK, FILTER_POKEMONS_TYPES, FILTER_POKEMONS_ORIGIN } from "../actions"
+import { GET_USER, GET_BY_NAME, ORDER_POKEMONS_ALPHATICALLY, ORDER_POKEMONS_ATTACK, FILTER_POKEMONS_TYPES, FILTER_POKEMONS_ORIGIN, RESET_FILTERS } from "../actions"
 
 let initialState = {allUsers:[],usersCopy:[]}
 
@@ -19,7 +19,7 @@ function rootReducer(state = initialState, action) {
             }
         case ORDER_POKEMONS_ALPHATICALLY:
                 let orderPokemons = [...state.usersCopy].sort((a, b) => {
-                    if (action.payload === "A") {
+                    if (action.payload === "F") {
                         return a.name.localeCompare(b.name);
                     } else if (action.payload === "D") {
                         return b.name.localeCompare(a.name);
@@ -34,7 +34,7 @@ function rootReducer(state = initialState, action) {
          case ORDER_POKEMONS_ATTACK:
                     let orderPokemonsAttack = [...state.usersCopy].sort((a, b) => {
                      
-                      return action.payload === "A" ? a.attack - b.attack : b.attack - a.attack;
+                      return action.payload === "H" ? a.attack - b.attack : b.attack - a.attack;
                     });
                     return {
                       ...state,
@@ -48,12 +48,17 @@ function rootReducer(state = initialState, action) {
                         };
         case FILTER_POKEMONS_ORIGIN:
             const PokemonOrigin = state.usersCopy.filter(
-                (pokemon) => (action.payload === "A" ? typeof pokemon.id === "number" : typeof pokemon.id === "string")
+                (pokemon) => (action.payload === "B" ? typeof pokemon.id === "number" : typeof pokemon.id === "string")
               );
               return {
                 ...state,
                 allUsers: PokemonOrigin,
               };
+        case RESET_FILTERS:
+                return {
+                  ...state,
+                  allUsers: state.usersCopy,
+                };
                     
         default:
             return state

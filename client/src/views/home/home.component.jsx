@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getByName, getUser } from '../../redux/actions';
+import { getByName, getUser} from '../../redux/actions';
 import Navbar from '../../components/navbar/navbar.component';
 import Cards from '../../components/cards/cards.component';
 import OrderFilter from '../../components/filters/filters';
@@ -53,20 +53,31 @@ function Home() {
 
   return (
     <div className='home'>
-      <h2 className='home-title'>Pokemons</h2>
-      <OrderFilter order={order} setOrder={setOrder} initialLoad={initialLoad} />
-      <Navbar handleChange={handleSearchChange} handleSubmit={handleSearchSubmit} />
+    <h2 className='home-title'>Pokemons</h2>
+    <OrderFilter order={order} setOrder={setOrder} initialLoad={initialLoad} />
+    <Navbar handleChange={handleSearchChange} handleSubmit={handleSearchSubmit} />
 
-      {initialLoad && (
-        <div className="loading-container">
-          {/* Loading GIF */}
-        </div>
+    {initialLoad && (
+      <div className="loading-container">
+        {/* Puedes agregar aquí la imagen mientras se renderizan las cards */}
+        <img
+          src="https://giffiles.alphacoders.com/191/1918.gif"
+          alt="Cargando Pokémon..."
+        />
+      </div>
       )}
 
-      {allUsers.length === 0 && !initialLoad && searchString !== '' && (
+        {allUsers.length === 0 && !initialLoad && searchString !== '' && (
+     <div>
         <h2>No existe el pokemon "{searchString}"</h2>
+       <img
+           src="https://giffiles.alphacoders.com/154/15437.gif"
+           alt="Imagen de Pokémon no encontrado"
+           
+        />
+     </div>
       )}
-
+      
       {allUsers.length > 0 && !initialLoad && (
         <Cards allUsers={displayedUsers} />
       )}

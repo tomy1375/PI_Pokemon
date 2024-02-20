@@ -120,7 +120,7 @@ function Create() {
             image: false,
             types: false,
           });
-          history.push('/home');
+           history.push('/home');
         } else {
           console.error("Error al crear Pokémon");
         }

@@ -25,7 +25,7 @@ function Landing() {
         />
       </div>
       <button className="buttonInicio" type="button" onClick={handleClick}>
-        Vamos
+       <h2>vamos</h2>
       </button>
       <img
         className="img_gif"
