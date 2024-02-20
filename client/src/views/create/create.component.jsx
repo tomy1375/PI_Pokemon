@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import './create.styles.css';
 import axios from 'axios';
 import { validation } from './validation';
+import { useHistory } from 'react-router-dom'
+
+import './create.styles.css';
+
 
 function Create() {
+
+  const history = useHistory();
   const initialInputState = {
     name: "",
     life: "",
@@ -115,6 +120,7 @@ function Create() {
             image: false,
             types: false,
           });
+          history.push('/home');
         } else {
           console.error("Error al crear Pokémon");
         }

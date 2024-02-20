@@ -1,14 +1,13 @@
-// components/filters/OrderFilter.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { orderPokemonsAlphabetically, orderPokemonsAttack, getUser, filterPokemonsTypes, filterPokemonsOrigin } from '../../redux/actions';
 
-import "./filters.styles.css"
+import "./filters.styles.css";
 
 const OrderFilter = ({ order, setOrder, initialLoad }) => {
   const dispatch = useDispatch();
   const [selectedType, setSelectedType] = useState('');
-  const [allTypes, setAllTypes] = useState([]);  // Nuevo estado para almacenar todos los tipos
+  const [allTypes, setAllTypes] = useState([]);
 
   useEffect(() => {
     if (initialLoad) {
@@ -21,53 +20,51 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
       } else if (order === 'AD' || order === 'DD') {
         dispatch(orderPokemonsAttack('D'));
       } else if (order === 'A' || order === 'C') {
-        // Utilizo la nueva acción orderPokemonsOrigin en lugar de filterPokemonsOrigin
         dispatch(filterPokemonsOrigin(order));
       }
     }
-    const typesFromAPI = ["normal",
-    "fighting",
-    "flying",
-    "poison",
-    "ground",
-    "rock",
-    "bug",
-    "ghost",
-    "steel",
-    "fire",
-    "water",
-    "grass",
-    "electric",
-    "psychic",
-    "ice",
-    "dragon",
-    "dark",
-    "fairy",
-    "unknown",
-    "shadow"]; 
+    
+    const typesFromAPI = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy", "unknown", "shadow"];
     setAllTypes(typesFromAPI);
   }, [dispatch, order, initialLoad]);
 
   const handleOrderChange = (newOrder) => {
     setOrder(newOrder);
-
+  
     if (newOrder === 'A' || newOrder === 'D') {
       dispatch(orderPokemonsAlphabetically(newOrder));
     } else if (newOrder === 'AA' || newOrder === 'DA') {
       dispatch(orderPokemonsAttack('A'));
     } else if (newOrder === 'AD' || newOrder === 'DD') {
       dispatch(orderPokemonsAttack('D'));
-    }
-  };
-
-  const handleFilterByType = () => {
-    if (selectedType) {
-      dispatch(filterPokemonsTypes(selectedType));
+    } else if (newOrder === 'Filtrar por API') { 
+      dispatch(filterPokemonsOrigin('A'));
+    } else if (newOrder === 'Filtrar por Creado') { 
+      dispatch(filterPokemonsOrigin('C'));
     }
   };
 
   const handleTypeChange = (event) => {
-    setSelectedType(event.target.value);
+    const newType = event.target.value;
+
+    if (newType === selectedType) {
+      // Si se selecciona nuevamente el tipo existente, no realizar ninguna acción adicional
+      return;
+    }
+
+    setSelectedType(newType);
+
+    if (newType) {
+      dispatch(filterPokemonsTypes(newType));
+    } else {
+      // Si se selecciona "Seleccionar Tipo", mostrar todos los tipos
+      setAllTypes(["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy", "unknown", "shadow"]);
+    }
+  };
+
+  const handleOriginFilterChange = (event) => {
+    const selectedFilter = event.target.value;
+    handleOrderChange(selectedFilter);
   };
 
   return (
@@ -92,18 +89,10 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
           </option>
         ))}
       </select>
-      <button onClick={handleFilterByType}>
-        Filtrar por Tipo
-      </button>
-       {/* Agregado el botón de filtro de origen */}
-       <button onClick={() => handleOrderChange('A')} className={order === 'A' ? 'active' : ''}>
-        Filtrar por api
-        {order === 'A' === 'Filtrar por Creado'}
-      </button>
-      <button onClick={() => handleOrderChange('C')} className={order === 'C' ? 'active' : ''}>
-        Filtrar por Creados
-        {order === 'C' === 'Filtrar por API'}
-      </button>
+      <select value={order} onChange={handleOriginFilterChange}>
+        <option value="Filtrar por API">Filtrar por API</option>
+        <option value="Filtrar por Creado">Filtrar por Creados</option>
+      </select>
     </div>
   );
 };

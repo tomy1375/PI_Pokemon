@@ -1,8 +1,10 @@
 import { GET_USER, GET_BY_NAME, ORDER_POKEMONS_ALPHATICALLY, ORDER_POKEMONS_ATTACK, FILTER_POKEMONS_TYPES, FILTER_POKEMONS_ORIGIN } from "../actions"
 
-let initialState = {allUsers:[],usersCopy:[], post:[]}
+let initialState = {allUsers:[],usersCopy:[]}
 
 function rootReducer(state = initialState, action) {
+    console.log('Action:', action);
+    console.log('Current State:', state);
     switch (action.type) {
         case GET_USER:
             return{
