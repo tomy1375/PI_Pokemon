@@ -31,6 +31,7 @@ function Create() {
     height: "Altura es requerida",
     weight: "Peso es requerido",
     image: "Imagen es requerida",
+    
   });
   const [completedFields, setCompletedFields] = useState({
     name: false,

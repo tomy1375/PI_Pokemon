@@ -1,42 +1,20 @@
-const { Pokemon, Types } = require("../db");
+
+const { buildPokemonResponse, findOrCreatePokemon, findTypes } = require("../utils");
+
+
+const associateTypesWithPokemon = async (pokemon, types) => {
+    await pokemon.addTypes(types);
+};
+
 
 const createdPokemonDb = async (name, image, life, attack, defense, speed, height, weight, types) => {
     try {
-        const [createdPokemon, created] = await Pokemon.findOrCreate({
-            where: { name },
-            defaults: { name, life, image, attack, defense, speed, height, weight },
-        });
+        const pokemon = await findOrCreatePokemon(name, life, image, attack, defense, speed, height, weight);
+        const foundTypes = await findTypes(types);
+        await associateTypesWithPokemon(pokemon, foundTypes);
 
-        if (!created) {
-            throw new Error("The Pokemon already exists.");
-        }
-
-        const foundTypes = await Types.findAll({
-            where: {
-                type: types,
-            },
-        });
-
-        // Extraer solo el nombre del tipo ('type') de cada tipo encontrado
         const typeNames = foundTypes.map(type => type.type);
-
-        // Asociar los tipos al Pokemon
-        await createdPokemon.addTypes(foundTypes);
-
-        // Construir el objeto de respuesta con el nombre del tipo
-        const updatedPokemon = {
-            id: createdPokemon.id,
-            name: createdPokemon.name,
-            image: createdPokemon.image,
-            life: createdPokemon.life,
-            attack: createdPokemon.attack,
-            defense: createdPokemon.defense,
-            speed: createdPokemon.speed,
-            height: createdPokemon.height,
-            weight: createdPokemon.weight,
-            created: createdPokemon.created,
-            types: typeNames, // Usar solo los nombres de los tipos
-        };
+        const updatedPokemon = buildPokemonResponse(pokemon, typeNames);
 
         return updatedPokemon;
     } catch (error) {

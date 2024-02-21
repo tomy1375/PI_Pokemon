@@ -26,16 +26,11 @@ body {
     align-items: center;
 }
 
-/* code {
-        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-          monospace;
-      } */
-      
-/* Agrega estos estilos para la paginación */
+
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 10px; /* Puedes ajustar este valor según tus preferencias */
+  margin-top: 10px; 
 }
 
 .pagination button {

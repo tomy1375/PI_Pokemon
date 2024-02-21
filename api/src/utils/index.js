@@ -1,5 +1,5 @@
 const axios = require('axios')
-const {Pokemon} = require("../db");
+const {Pokemon,Types} = require("../db");
 const infoCleaner = (data) => {
     return data.results.map((element) => ({
         name: element.name,
@@ -26,8 +26,50 @@ const getDetailedInfoFromUrl = async (url) => {
     };
 };
 
+const buildPokemonResponse = (pokemon, typeNames) => {
+    return {
+        id: pokemon.id,
+        name: pokemon.name,
+        image: pokemon.image,
+        life: pokemon.life,
+        attack: pokemon.attack,
+        defense: pokemon.defense,
+        speed: pokemon.speed,
+        height: pokemon.height,
+        weight: pokemon.weight,
+        created: pokemon.created,
+        types: typeNames,
+    };
+};
+
+const findOrCreatePokemon = async (name, life, image, attack, defense, speed, height, weight) => {
+    const [createdPokemon, created] = await Pokemon.findOrCreate({
+        where: { name },
+        defaults: { name, life, image, attack, defense, speed, height, weight },
+    });
+
+    if (!created) {
+        throw new Error("The Pokemon already exists.");
+    }
+
+    return createdPokemon;
+};
+
+const findTypes = async (types) => {
+    const foundTypes = await Types.findAll({
+        where: {
+            type: types,
+        },
+    });
+
+    return foundTypes;
+};
+
 
 module.exports={
     infoCleaner,
-    getDetailedInfoFromUrl
+    getDetailedInfoFromUrl,
+    buildPokemonResponse,
+    findOrCreatePokemon,
+    findTypes
 }

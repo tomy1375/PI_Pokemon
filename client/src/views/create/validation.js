@@ -31,6 +31,9 @@ export const validation = (input) => {
       } debe ser un número válido entre 1 y 100`; // Actualizado el mensaje de error
     }
   });
+  if (input.types.length === 0) {
+    errors.types = "Selecciona al menos un tipo";
+  }
 
   return errors;
 }

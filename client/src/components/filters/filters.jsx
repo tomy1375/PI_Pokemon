@@ -131,7 +131,7 @@ const OrderFilter = ({ order, setOrder, initialLoad }) => {
         <option value="L">HIGH ATTACK</option>
       </select>
 
-      <button onClick={handleResetFilters} className="limpiarFiltros"><img src="https://i.pinimg.com/originals/9f/b1/25/9fb125f1fedc8cc62ab5b20699ebd87d.gif" alt="" className="limpiarFiltros-icon"/>Limpiar filtros</button>
+      <button onClick={handleResetFilters} className="limpiarFiltros"><img src="https://i.pinimg.com/originals/9f/b1/25/9fb125f1fedc8cc62ab5b20699ebd87d.gif" alt="" className="limpiarFiltros-icon"/>Recargar</button>
     </div>
   );
 };

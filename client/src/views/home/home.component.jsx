@@ -59,7 +59,6 @@ function Home() {
 
     {initialLoad && (
       <div className="loading-container">
-        {/* Puedes agregar aquí la imagen mientras se renderizan las cards */}
         <img
           src="https://giffiles.alphacoders.com/191/1918.gif"
           alt="Cargando Pokémon..."
@@ -92,6 +91,7 @@ function Home() {
             {page}
           </button>
         ))}
+        <button >traer pokemones agua fuego</button>
       </div>
     </div>
   );

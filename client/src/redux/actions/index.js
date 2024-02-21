@@ -7,6 +7,7 @@ export const ORDER_POKEMONS_ATTACK = "ORDER_POKEMONS_ATTACK"
 export const FILTER_POKEMONS_TYPES = 'FILTER_POKEMONS_TYPES'
 export const FILTER_POKEMONS_ORIGIN = "FILTER_POKEMONS_ORIGIN"
 export const RESET_FILTERS = "RESET_FILTERS"
+export const POKEMONS_TYPES_F_A = "POKEMONS_TYPES_F_A"
 
 export function getUser() {
     return async function(dispatch){
@@ -67,5 +68,11 @@ export function orderPokemonsAlphabetically(value) {
   export function resetFilters() {
     return {
       type: "RESET_FILTERS",
+    };
+  }
+
+  export function PokemonFilterFA() {
+    return {
+      type: "POKEMONS_TYPES_F_A",
     };
   }
