@@ -33,3 +33,70 @@
 .card h2 {
   margin-bottom: 8px;
 }
+
+
+.hp-bar, .attack-bar {
+  position: relative;
+  margin-bottom:  2px; /* Ajusta este valor según el espacio deseado */
+  width:  100%;
+  background-color: #ddd;
+  height:  20px;
+  border-radius:  10px;
+}
+
+
+@keyframes fillHPBar {
+  from {
+    width:  0%;
+  }
+  to {
+    width:  100%;
+  }
+}
+.hp-value {
+  height:   100%;
+  background-color: #4CAF50;
+  /* Elimina la animación por defecto aquí */
+}
+
+.hp-value.animate {
+  animation: fillHPBar   1.5s forwards;
+}
+
+
+.attack-bar {
+ /* Ajusta este valor según el espacio deseado */
+  width:  100%;
+  background-color: #ddd;
+  height:  20px;
+  border-radius:  10px;
+}
+
+
+.attack-value {
+  height:   100%; /* Asegura que la barra de progreso ocupe toda la altura de la barra */
+  background-color: #4CAF50; /* Color de la barra de progreso */
+  transition: width  1.5s ease; /* Anima el cambio de ancho */
+}
+
+.attack-value.animate {
+  animation: fillHPBar   1.5s forwards;
+}
+
+.hp-number {
+  position: absolute;
+  right:  0; /* Ajusta esto según sea necesario */
+  top:  50%;
+  transform: translateY(-50%); /* Centra verticalmente el número */
+  color: #000000; /* Asegúrate de que el número sea visible sobre el fondo de la barra */
+  padding:  0  5px; /* Espacio alrededor del número para que no toque el borde de la barra */
+}
+
+.attack-number {
+  position: absolute;
+  right:  0; /* Ajusta esto según sea necesario */
+  top:  50%;
+  transform: translateY(-50%); /* Centra verticalmente el número */
+  color: #000000; /* Asegúrate de que el número sea visible sobre el fondo de la barra */
+  padding:  0  5px; /* Espacio alrededor del número para que no toque el borde de la barra */
+}

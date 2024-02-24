@@ -18,6 +18,21 @@ function rootReducer(state = initialState, action) {
                 allUsers:action.payload
             }
         case ORDER_POKEMONS_ALPHATICALLY:
+            if (state.typesfiltered.length>0) {
+                let orderPokemons = [...state.typesfiltered].sort((a, b) => {
+                    if (action.payload === "F") {
+                        return a.name.localeCompare(b.name);
+                    } else if (action.payload === "D") {
+                        return b.name.localeCompare(a.name);
+                    } else {
+                        return 0;
+                    }
+                });
+                return {
+                    ...state,
+                    allUsers: orderPokemons  
+                };
+            }else{
                 let orderPokemons = [...state.usersCopy].sort((a, b) => {
                     if (action.payload === "F") {
                         return a.name.localeCompare(b.name);
@@ -31,6 +46,8 @@ function rootReducer(state = initialState, action) {
                     ...state,
                     allUsers: orderPokemons  
                 };
+            }
+               
          case ORDER_POKEMONS_ATTACK:
                     let orderPokemonsAttack = [...state.usersCopy].sort((a, b) => {
                      

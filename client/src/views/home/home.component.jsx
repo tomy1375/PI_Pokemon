@@ -91,7 +91,6 @@ function Home() {
             {page}
           </button>
         ))}
-        <button >traer pokemones agua fuego</button>
       </div>
     </div>
   );
